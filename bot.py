@@ -16,10 +16,10 @@ dp = Dispatcher()
 GEMINI_API_KEY = "AIzaSyBzz3oxpnhO2ii67d4vU0BEEeI1AidRcu0"
 
 @dp.message(F.text=='/start')
-async def start(message: types.Message, state: FSMContext):
+async def start(message: types.Message, state:FSMContext):
     await state.clear()
     await message.answer("Assalamu alaykum!\nAI yordamchi botimizga xush kelibsiz\nO'zingiznga kerakli mutahasisni tanlang", reply_markup=menu_btn)
- 
+
 
 async def connect_ai(prompt):
     try:
@@ -40,6 +40,13 @@ async def start(message: types.Message, state:FSMContext):
     await message.answer("Iltimos Psixologga nima savolingiz bo'lsa batafsil yozib yuboring.")
     await state.set_state(PsixologState.prompt)
 
+@dp.message(F.text=='Dietolog')
+async def start(message: types.Message, state:FSMContext):
+    await state.clear()
+    await message.answer("Iltimos Dietologga nima savolingiz bo'lsa batafsil yozib yuboring.")
+    await state.set_state(DietologState.prompt)
+
+
 @dp.message(PsixologState.prompt)
 async def echo(message: types.Message):
     text = message.text
@@ -53,11 +60,7 @@ async def echo(message: types.Message):
     # safe_response = escape_md(response)
     await message.answer(response)
 
-@dp.message(F.text=='Dietolog')
-async def start(message: types.Message, state:FSMContext):
-    await state.clear()
-    await message.answer("Iltimos Dietologga nima savolingiz bo'lsa batafsil yozib yuboring.")
-    await state.set_state(DietologState.prompt)
+
 
 @dp.message(DietologState.prompt)
 async def echo(message: types.Message):
